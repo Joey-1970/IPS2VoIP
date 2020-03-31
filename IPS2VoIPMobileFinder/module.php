@@ -21,7 +21,13 @@
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
 		//Status-Variablen anlegen
+		$this->RegisterProfileInteger("IPS2VoIP.StartStop", "Telephone", "", "", 0, 2, 1);
+		IPS_SetVariableProfileAssociation("IPS2VoIP.StartStop", 0, "Start", "Telephone", 0x00FF00);
+		IPS_SetVariableProfileAssociation("IPS2VoIP.StartStop", 1, "Stop", "Telephone", 0xFF0000);
 		
+		//Status-Variablen anlegen
+		$this->RegisterVariableInteger("State", "Ruf", "IPS2VoIP.StartStop", 10);
+		$this->EnableAction("State");
         }
  	
 	public function GetConfigurationForm() 
@@ -74,9 +80,27 @@
 	}
 	    
 	// Beginn der Funktionen
+	private function Connect()
+	{
+  		
+	}
 	
 	
-	
-	    
+	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 1);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 1)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);        
+	}    
 }
 ?>
