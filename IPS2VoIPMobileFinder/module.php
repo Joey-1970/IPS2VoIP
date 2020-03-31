@@ -19,7 +19,7 @@
 		$this->RegisterPropertyBoolean("Open", false);
 		$this->RegisterPropertyString("DeviceNumber", "");
 		$this->RegisterPropertyInteger("VoIP_InstanceID", 0);
-		$this->RegisterPropertyInteger("Timer_1", 0);
+		$this->RegisterPropertyInteger("Timer_1", 3);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
 		//Status-Variablen anlegen
