@@ -1,0 +1,12 @@
+{
+  "id": "{3081D0E2-6129-3247-4123-C2B66163A580}",
+  "author": "Joachim Päper",
+  "name": "IPS2VoIP",
+  "url": "www.ip-symcon.de",
+  "compatibility": {
+        "version": "5.1"
+  },
+  "version": "1.0",
+  "build": 0,
+  "date": 0
+}
