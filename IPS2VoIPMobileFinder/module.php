@@ -15,7 +15,7 @@
             	// Diese Zeile nicht löschen.
             	parent::Create();
 		// {A4224A63-49EA-445F-8422-22EF99D8F624}
-		$this->ConnectParent("{A4224A63-49EA-445F-8422-22EF99D8F624}");
+		//$this->ConnectParent("{A4224A63-49EA-445F-8422-22EF99D8F624}");
 		$this->RegisterPropertyBoolean("Open", false);
 		$this->RegisterPropertyString("DeviceNumber", "");
 		$this->RegisterPropertyInteger("VoIP_InstanceID", 0);
