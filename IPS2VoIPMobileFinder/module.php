@@ -15,7 +15,8 @@
             	// Diese Zeile nicht löschen.
             	parent::Create();
 		$this->RegisterPropertyBoolean("Open", false);
-		$this->RegisterPropertyString("Endgerätenummer", "");
+		$this->RegisterPropertyString("DeviceNumber", "");
+		$this->RegisterPropertyInteger("Timer_1", 0);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
 		//Status-Variablen anlegen
@@ -31,10 +32,9 @@
 		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
 				
 		$arrayElements = array(); 
-		$arrayElements[] = array("type" => "Label", "label" => "UNGETESTET!!"); 
 		
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
-		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceID", "caption" => "Device ID");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Gerätenummer");
 		
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
@@ -50,17 +50,11 @@
             	parent::ApplyChanges();
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			If ($this->ReadPropertyInteger("DeviceID") >= 65537) {
-				$this->SetStatus(102);
-				$this->GetDeviceInfo();
-				$this->GetState();
-				$this->SetTimerInterval("Timer_1", 1000);
-			}
-			else {
-				Echo "Syntax der Device ID inkorrekt!";
-				$this->SendDebug("ApplyChanges", "Syntax der Device ID inkorrekt!", 0);
-				$this->SetStatus(203);
-			}
+			
+			$this->SetStatus(102);
+
+			$this->SetTimerInterval("Timer_1", 1000);
+			
 		}
 		else {
 			$this->SetStatus(104);
@@ -72,10 +66,7 @@
 	{
   		switch($Ident) {
 	        case "State":
-	            	//$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{4AA318CB-CA9A-2467-3079-A35AD1577771}", 
-			//	"Function" => "PlugSwitch", "DeviceID" => $this->ReadPropertyInteger("DeviceID"), "State" => $Value )));
-	            	SetValueBoolean($this->GetIDForIdent($Ident), $Value);
-			$this->GetState();
+	            	
 		break;
 	        default:
 	            throw new Exception("Invalid Ident");
@@ -83,43 +74,9 @@
 	}
 	    
 	// Beginn der Funktionen
-	public function GetState()
-	{
-		If ($this->ReadPropertyBoolean("Open") == true) {
-			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{4AA318CB-CA9A-2467-3079-A35AD1577771}", 
-					"Function" => "DeviceState", "DeviceID" => $this->ReadPropertyInteger("DeviceID") )));
-			$this->SendDebug("GetState", "Ergebnis: ".$Result, 0);
-			$DeviceStateArray = array();
-			$DeviceStateArray = unserialize($Result);
-			/*
-			If (isset($DeviceStateArray[9019])) {
-				If (GetValueBoolean($this->GetIDForIdent("Available")) <> $DeviceStateArray[9019]) {
-					SetValueBoolean($this->GetIDForIdent("Available"), $DeviceStateArray[9019]);
-				}
-			}
-			If (isset($DeviceStateArray[5850])) {
-				If (GetValueBoolean($this->GetIDForIdent("State")) <> $DeviceStateArray[5850]) {
-					SetValueBoolean($this->GetIDForIdent("State"), $DeviceStateArray[5850]);
-				}
-			}
-			*/
-		}
-	}
 	
-	private function GetDeviceInfo()
-	{
-		If ($this->ReadPropertyBoolean("Open") == true) {
-			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{4AA318CB-CA9A-2467-3079-A35AD1577771}", 
-					"Function" => "DeviceInfo", "DeviceID" => $this->ReadPropertyInteger("DeviceID") )));
-			$this->SendDebug("GetDeviceInfo", "Ergebnis: ".$Result, 0);
-			$DeviceInfo = array();
-			$DeviceInfo = unserialize($Result);
-			$this->WriteAttributeString("Name", $DeviceInfo["Name"]);
-			$this->WriteAttributeString("Typ", $DeviceInfo["Typ"]);
-			$this->WriteAttributeString("Firmware", $DeviceInfo["Firmware"]);
-			//$this->ReloadForm();
-		}
-	}    
+	
+	
 	    
 }
 ?>
