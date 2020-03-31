@@ -23,7 +23,7 @@
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
 		//Status-Variablen anlegen
-		$this->RegisterProfileInteger("IPS2VoIP.StartStop", "Telephone", "", "", 0, 2, 1);
+		$this->RegisterProfileInteger("IPS2VoIP.StartStop", "Telephone", "", "", 0, 1, 0);
 		IPS_SetVariableProfileAssociation("IPS2VoIP.StartStop", 0, "Start", "Telephone", 0x00FF00);
 		IPS_SetVariableProfileAssociation("IPS2VoIP.StartStop", 1, "Stop", "Telephone", 0xFF0000);
 		
@@ -43,7 +43,7 @@
 		$arrayElements = array(); 
 		
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
-		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Gerätenummer");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Telefonnummer");
 		$arrayElements[] = array("type" => "SelectInstance", "name" => "VoIP_InstanceID", "caption" => "VoIP-Instanz");
 		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals"); 
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "s");
@@ -74,7 +74,12 @@
 	{
   		switch($Ident) {
 	        case "State":
-	            	
+	            	If ($Value == 0) {
+				$this->Connect();
+			}
+			elseif ($Value == 1) {
+				$this->Disconnect();
+			}
 		break;
 	        default:
 	            throw new Exception("Invalid Ident");
@@ -84,12 +89,26 @@
 	// Beginn der Funktionen
 	private function Connect()
 	{
-  		
+  		If ($this->ReadPropertyBoolean("Open") == true) {
+			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
+			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+			$Timer_1 = $this->ReadPropertyInteger("Timer_1");
+			
+			$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
+			$this->SetBuffer("ConnectionID", $ConnectionID);
+			$this->SetTimerInterval("Timer_1", $Timer_1 * 1000);
+		}
 	}
 	
 	private function Disconnect()
 	{
-  		
+  		If ($this->ReadPropertyBoolean("Open") == true) {
+			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+			$ConnectionID = intval($this->GetBuffer("ConnectionID"));
+			
+			VoIP_Disconnect($VoIP_InstanceID, $ConnectionID);
+			$this->SetTimerInterval("Timer_1", 0);
+		}
 	}
 	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
