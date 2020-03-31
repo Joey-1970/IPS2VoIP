@@ -1,0 +1,14 @@
+{
+  "id": "{74754CE5-E95C-3201-8559-08AC7D7FE9EE}",
+  "name": "IPS2VoIPMobileFinder",
+  "type": 3,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2VoIPMobileFinder"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "IPS2VoIPMobileFinder"
+}
