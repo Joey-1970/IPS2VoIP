@@ -14,23 +14,12 @@
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-		$this->ConnectParent("{562389F8-739F-644A-4FC7-36F2CE3AFE4F}");
 		$this->RegisterPropertyBoolean("Open", false);
-		$this->RegisterPropertyInteger("DeviceID", 0);
-		$this->RegisterTimer("Timer_1", 0, 'IPS2TradfriBlind_GetState($_IPS["TARGET"]);');
-		
-		$this->RegisterAttributeString("Name", "");
-		$this->RegisterAttributeString("Typ", "");
-		$this->RegisterAttributeString("Firmware", "");
+		$this->RegisterPropertyString("Endgerätenummer", "");
+		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
 		//Status-Variablen anlegen
-		$this->RegisterVariableInteger("Move", "Status", "~ShutterMoveStop", 10);
-		$this->EnableAction("Move");
 		
-		$this->RegisterVariableInteger("State", "Status", "", 20);
-		$this->EnableAction("State");
-		
-		$this->RegisterVariableBoolean("Available", "Verfügbar", "~Alert.Reversed", 30);
         }
  	
 	public function GetConfigurationForm() 
@@ -47,9 +36,6 @@
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceID", "caption" => "Device ID");
 		
-		$arrayElements[] = array("type" => "Label", "label" => "Name: ".$this->ReadAttributeString("Name")); 
-		$arrayElements[] = array("type" => "Label", "label" => "Typ: ".$this->ReadAttributeString("Typ")); 
-		$arrayElements[] = array("type" => "Label", "label" => "Firmware: ".$this->ReadAttributeString("Firmware")); 
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
 		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
