@@ -74,6 +74,7 @@
 	{
   		switch($Ident) {
 	        case "State":
+			SetValueInteger($this->GetIDForIdent("State"), $Value);
 	            	If ($Value == 0) {
 				$this->Connect();
 			}
@@ -100,7 +101,7 @@
 		}
 	}
 	
-	private function Disconnect()
+	public function Disconnect()
 	{
   		If ($this->ReadPropertyBoolean("Open") == true) {
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
@@ -108,6 +109,7 @@
 			
 			VoIP_Disconnect($VoIP_InstanceID, $ConnectionID);
 			$this->SetTimerInterval("Timer_1", 0);
+			$this->SetBuffer("ConnectionID", 0);
 		}
 	}
 	    
