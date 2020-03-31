@@ -16,6 +16,7 @@
             	parent::Create();
 		$this->RegisterPropertyBoolean("Open", false);
 		$this->RegisterPropertyString("DeviceNumber", "");
+		$this->RegisterPropertyInteger("VoIP_InstanceID", 0);
 		$this->RegisterPropertyInteger("Timer_1", 0);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
@@ -35,7 +36,9 @@
 		
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Gerätenummer");
-		
+		$arrayElements[] = array("type" => "SelectInstance", "name" => "VoIP_InstanceID", "caption" => "VoIP-Instanz");
+		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals"); 
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "s");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
 		$arrayElements[] = array("type" => "TestCenter", "name" => "TestCenter");
@@ -50,11 +53,8 @@
             	parent::ApplyChanges();
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			
 			$this->SetStatus(102);
-
-			$this->SetTimerInterval("Timer_1", 1000);
-			
+			$this->SetTimerInterval("Timer_1", 0);
 		}
 		else {
 			$this->SetStatus(104);
