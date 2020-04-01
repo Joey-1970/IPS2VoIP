@@ -65,7 +65,7 @@
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			// Prüfen des ausgeählten Parents
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
-			$ParentModuleID == $this->CheckParentModuleID($VoIP_InstanceID);
+			$ParentModuleID = $this->CheckParentModuleID($VoIP_InstanceID);
 			If ($ParentModuleID == true) {
 				$this->SetStatus(102);
 			}
