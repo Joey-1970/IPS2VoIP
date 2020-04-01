@@ -60,6 +60,8 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
+		SetValueInteger($this->GetIDForIdent("State"), 1);
+		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			$this->SetStatus(102);
 			$this->SetTimerInterval("Timer_1", 0);
