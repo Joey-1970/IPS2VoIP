@@ -38,7 +38,7 @@
 		$arrayStatus[] = array("code" => 101, "icon" => "inactive", "caption" => "Instanz wird erstellt"); 
 		$arrayStatus[] = array("code" => 102, "icon" => "active", "caption" => "Instanz ist aktiv");
 		$arrayStatus[] = array("code" => 104, "icon" => "inactive", "caption" => "Instanz ist inaktiv");
-		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
+		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Fehlerhafte Schnittstelle!");
 				
 		$arrayElements = array(); 
 		
@@ -63,7 +63,16 @@
 		SetValueInteger($this->GetIDForIdent("State"), 1);
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
-			$this->SetStatus(102);
+			// Prüfen des ausgeählten Parents
+			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+			$ParentModuleID == $this->CheckParentModuleID($VoIP_InstanceID);
+			If ($ParentModuleID == true) {
+				$this->SetStatus(102);
+			}
+			else {
+				$this->SetStatus(202);
+				Echo "Fehlerhafte Schnittstelle (keine VoIP-Instanz)!";
+			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}
 		else {
@@ -132,10 +141,14 @@
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);        
 	} 
 	
-	private function GetParentID()
+	private function CheckParentModuleID(int $InstanceID)
 	{
-		$ParentID = (IPS_GetInstance($this->InstanceID)['ConnectionID']);  
-	return $ParentID;
+		$Result = false;
+		$ModuleID = (IPS_GetInstance($InstanceID)['ModuleInfo']['ModuleID']); 
+		If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
+			$Result = true;
+		}
+	return $Result;
 	}
 }
 ?>
