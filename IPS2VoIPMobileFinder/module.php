@@ -144,9 +144,11 @@
 	private function CheckParentModuleID(int $InstanceID)
 	{
 		$Result = false;
-		$ModuleID = (IPS_GetInstance($InstanceID)['ModuleInfo']['ModuleID']); 
-		If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
-			$Result = true;
+		If ($InstanceID >= 10000) {
+			$ModuleID = (IPS_GetInstance($InstanceID)['ModuleInfo']['ModuleID']); 
+			If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
+				$Result = true;
+			}
 		}
 	return $Result;
 	}
