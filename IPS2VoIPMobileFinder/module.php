@@ -157,6 +157,9 @@
 				Echo "Fehlerhafte VoIP-Schnittstelle! \n(keine korrekte VoIP-Instanz)\n";
 			}
 		}
+		else {
+			Echo "Fehlende VoIP-Schnittstelle! \n";
+		}
 	return $Result;
 	}
 	    
