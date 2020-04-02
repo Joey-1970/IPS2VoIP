@@ -74,7 +74,6 @@
 			}
 			else {
 				$this->SetStatus(202);
-				Echo "Fehlerhafte Schnittstellen! /n(keine korrekte VoIP-Instanz und/oder Telefonnummer)";
 			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}
@@ -152,6 +151,9 @@
 			If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
 				$Result = true;
 			}
+			else {
+				Echo "Fehlerhafte Schnittstellen! /n(keine korrekte VoIP-Instanz)";
+			}
 		}
 	return $Result;
 	}
@@ -162,6 +164,9 @@
 		If (strlen($DeviceNumber > 0)) {
 			if (preg_match("#^[0-9*]+$#", $DeviceNumber)) {
 				$Result = true;
+			}
+			else {
+				Echo "Fehlerhafte Telefonnummer! /n(zulässige Zeichen: 0-9 *)";
 			}
 		}
 	return $Result;
