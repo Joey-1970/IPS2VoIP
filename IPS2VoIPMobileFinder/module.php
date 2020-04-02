@@ -154,7 +154,7 @@
 				$Result = true;
 			}
 			else {
-				Echo "Fehlerhafte Schnittstellen! \n(keine korrekte VoIP-Instanz\n)";
+				Echo "Fehlerhafte Schnittstellen! \n(keine korrekte VoIP-Instanz)\n";
 			}
 		}
 	return $Result;
