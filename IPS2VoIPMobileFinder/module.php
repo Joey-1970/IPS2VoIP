@@ -89,8 +89,8 @@
 	{
   		switch($Ident) {
 	        case "State":
-			SetValueInteger($this->GetIDForIdent("State"), $Value);
-	            	If ($Value == 0) {
+			$State = GetValueInteger($this->GetIDForIdent("State"));
+	            	If (($Value == 0) AND ($State == false)) {
 				$this->Connect();
 			}
 			elseif ($Value == 1) {
@@ -107,6 +107,7 @@
 	{
   		$CurrentStatus = $this->GetStatus();
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
+			SetValueInteger($this->GetIDForIdent("State"), true);
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$Timer_1 = $this->ReadPropertyInteger("Timer_1");
@@ -121,6 +122,7 @@
 	{
   		$CurrentStatus = $this->GetStatus();
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
+			SetValueInteger($this->GetIDForIdent("State"), false);
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$ConnectionID = intval($this->GetBuffer("ConnectionID"));
 			
