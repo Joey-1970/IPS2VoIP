@@ -154,7 +154,7 @@
 				$Result = true;
 			}
 			else {
-				Echo "Fehlerhafte Schnittstellen! /n(keine korrekte VoIP-Instanz)";
+				Echo "Fehlerhafte Schnittstellen! \n(keine korrekte VoIP-Instanz)";
 			}
 		}
 	return $Result;
@@ -168,8 +168,11 @@
 				$Result = true;
 			}
 			else {
-				Echo "Fehlerhafte Telefonnummer! /n(zulässige Zeichen: 0-9 *)";
+				Echo "Fehlerhafte Telefonnummer! \n(zulässige Zeichen: 0-9 *)";
 			}
+		}
+		else {
+			Echo "Fehlende Telefonnummer! \n(zulässige Zeichen: 0-9 *)";
 		}
 	return $Result;
 	}
