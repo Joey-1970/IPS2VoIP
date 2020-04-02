@@ -103,7 +103,8 @@
 	// Beginn der Funktionen
 	private function Connect()
 	{
-  		If ($this->ReadPropertyBoolean("Open") == true) {
+  		$CurrentStatus = $this->GetStatus();
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$Timer_1 = $this->ReadPropertyInteger("Timer_1");
@@ -116,7 +117,8 @@
 	
 	public function Disconnect()
 	{
-  		If ($this->ReadPropertyBoolean("Open") == true) {
+  		$CurrentStatus = $this->GetStatus();
+		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$ConnectionID = intval($this->GetBuffer("ConnectionID"));
 			
