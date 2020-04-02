@@ -47,7 +47,7 @@
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Telefonnummer");
 		$arrayElements[] = array("type" => "Label", "label" => "IP-Symcon VoIP-Instanz"); 
 		$arrayElements[] = array("type" => "SelectInstance", "name" => "VoIP_InstanceID", "caption" => "VoIP-Instanz");
-		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals"); 
+		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals (3 bis 15 Sekunden)"); 
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "s");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Label", "label" => "Test Center"); 
@@ -111,6 +111,7 @@
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$Timer_1 = $this->ReadPropertyInteger("Timer_1");
+			$Timer_1 = min(15, max(3, $Timer_1));
 			
 			$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
 			$this->SetBuffer("ConnectionID", $ConnectionID);
