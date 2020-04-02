@@ -74,7 +74,7 @@
 			}
 			else {
 				$this->SetStatus(202);
-				Echo "Fehlerhafte Schnittstellen (keine korrekte VoIP-Instanz und/oder Telefonnummer)!";
+				Echo "Fehlerhafte Schnittstellen! /n(keine korrekte VoIP-Instanz und/oder Telefonnummer)";
 			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}
