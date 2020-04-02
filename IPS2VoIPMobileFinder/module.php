@@ -43,7 +43,9 @@
 		$arrayElements = array(); 
 		
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
+		$arrayElements[] = array("type" => "Label", "label" => "Telefonnummer des Endgerätes"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Telefonnummer");
+		$arrayElements[] = array("type" => "Label", "label" => "IP-Symcon VoIP-Instanz"); 
 		$arrayElements[] = array("type" => "SelectInstance", "name" => "VoIP_InstanceID", "caption" => "VoIP-Instanz");
 		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals"); 
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "s");
