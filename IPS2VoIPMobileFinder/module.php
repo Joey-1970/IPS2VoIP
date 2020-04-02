@@ -65,13 +65,16 @@
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			// Prüfen des ausgeählten Parents
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
-			$ParentModuleID = $this->CheckParentModuleID($VoIP_InstanceID);
-			If ($ParentModuleID == true) {
+			$CheckParentModuleID = $this->CheckParentModuleID($VoIP_InstanceID);
+			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
+			$CheckDeviceNumber = $this->CheckDeviceNumber($DeviceNumber);
+			
+			If (($CheckParentModuleID == true) AND ($CheckDeviceNumber == true)) {
 				$this->SetStatus(102);
 			}
 			else {
 				$this->SetStatus(202);
-				Echo "Fehlerhafte Schnittstelle (keine VoIP-Instanz)!";
+				Echo "Fehlerhafte Schnittstellen (keine korrekte VoIP-Instanz und/oder Telefonnummer)!";
 			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}
@@ -147,6 +150,17 @@
 		If ($InstanceID >= 10000) {
 			$ModuleID = (IPS_GetInstance($InstanceID)['ModuleInfo']['ModuleID']); 
 			If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
+				$Result = true;
+			}
+		}
+	return $Result;
+	}
+	    
+	private function CheckDeviceNumber(string $DeviceNumber)
+	{
+		$Result = false;
+		If (strlen($DeviceNumber > 0) {
+			if (preg_match("#^[0-9*]+$#", $DeviceNumber)) {
 				$Result = true;
 			}
 		}
