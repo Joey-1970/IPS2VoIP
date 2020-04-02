@@ -168,7 +168,7 @@
 	private function CheckDeviceNumber(string $DeviceNumber)
 	{
 		$Result = false;
-		If (strlen($DeviceNumber > 0)) {
+		If (strlen($DeviceNumber) > 0) {
 			if (preg_match("#^[0-9*]+$#", $DeviceNumber)) {
 				$Result = true;
 			}
