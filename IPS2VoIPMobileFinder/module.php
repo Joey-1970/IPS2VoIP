@@ -106,9 +106,7 @@
 	{
   		$CurrentStatus = $this->GetStatus();
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
-			//$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}", 
-						//"Function" => "BulbSwitch", "DeviceID" => $this->ReadPropertyInteger("DeviceID"), "State" => $Value, "Fadetime" => GetValueInteger($this->GetIDForIdent("Fadetime")) )));
-
+			
 			
 			SetValueInteger($this->GetIDForIdent("State"), 0);
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
@@ -117,6 +115,10 @@
 			$Timer_1 = min(15, max(3, $Timer_1));
 			
 			$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
+			
+			$ConnectionID = $this->SendDataToParent(json_encode(Array("DataID"=> "{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}", 
+						"Function" => "Connect", "DeviceNumber" => $this->ReadPropertyString("DeviceNumber") )));
+
 			$this->SetBuffer("ConnectionID", $ConnectionID);
 			$this->SetTimerInterval("Timer_1", $Timer_1 * 1000);
 		}
@@ -131,6 +133,11 @@
 			$ConnectionID = intval($this->GetBuffer("ConnectionID"));
 			
 			VoIP_Disconnect($VoIP_InstanceID, $ConnectionID);
+			
+			$ConnectionID = $this->SendDataToParent(json_encode(Array("DataID"=> "{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}", 
+						"Function" => "Disconnect", "ConnectionID" => $ConnectionID )));
+
+			
 			$this->SetTimerInterval("Timer_1", 0);
 			$this->SetBuffer("ConnectionID", 0);
 		}
