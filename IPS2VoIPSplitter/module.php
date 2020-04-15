@@ -62,7 +62,7 @@
 	    	$Result = false;
 	 	switch ($data->Function) {
 			case "Connect":
-				$this->Connect($data->DeviceNumber);
+				$Result = $this->Connect($data->DeviceNumber);
 				break;
 			case "Disconnect":
 				$this->Disconnect($data->ConnectionID);
@@ -136,6 +136,7 @@
 	{
 		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 		$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
+	return $ConnectionID;
 	}
 	    
 	private function Disconnect(int $ConnectionID)
