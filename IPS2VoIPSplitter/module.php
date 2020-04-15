@@ -67,8 +67,63 @@
 	}
 	    
 	// Beginn der Funktionen
-	
-	
+	public function CallMonitor(string $Sender, string $Event, int $Connection, string $Data)
+	{
+		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+
+		if($Sender == "VoIP") {
+		    	// Wir wollen nur eingehende Anrufe verarbeiten
+		    	if(VoIP_GetConnection($VoIP_InstanceID, $Connection["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
+				$this->SendDebug("CallMonitor", "Ausgehender Anruf", 0);
+			    	return;
+		    	}
+
+		    	switch($Event) {
+				case "Incoming":
+					$this->SendDebug("CallMonitor", "Eingehender Anruf", 0);
+			    		break;
+
+				case "Connect":
+					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung aufgebaut", 0);
+			    		break;
+
+				case "Disconnect":
+					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung beendet", 0);
+			    		break;
+
+				case "DTMF":
+					$this->SendDebug("CallMonitor", "Es wurde ein DTMF Signal empfangen", 0);
+
+			    		switch($Data) {
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						$this->SendDebug("CallMonitor", "Es wurde eine der Tasten 1 bis 6 gedrückt", 0);
+				    		break;
+
+						case '#':
+							$this->SendDebug("CallMonitor", "Es wurde die Taste # gedrückt", 0);
+				    			break;
+
+						default:
+							$this->SendDebug("CallMonitor", "Es wurde die Taste ". $Data ." gedrückt", 0);
+				    			break;
+			    		}
+			    		break;
+
+				case "PlayFinish":
+					$this->SendDebug("CallMonitor", "Es wurde eine Sounddatei abgespielt", 0);
+			    		break;
+
+				default:
+					$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$Event." wurde ausgelöst", 0);
+			    		break;
+		    	}
+		}
+	}
 	
 	private function CheckParentModuleID(int $InstanceID)
 	{
