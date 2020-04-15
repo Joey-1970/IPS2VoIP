@@ -65,19 +65,19 @@
 	}
 	    
 	// Beginn der Funktionen
-	public function CallMonitor(string $Sender, string $Event, string $System, string $Data)
+	public function CallMonitor(string $Data)
 	{
 		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 
-		if($Sender == "VoIP") {
-			$System = unserialize($System);
+		if($_IPS["SENDER"] == "VoIP") {
+			$_IPS = unserialize($Data);
 		    	// Wir wollen nur eingehende Anrufe verarbeiten
-		    	if(VoIP_GetConnection($VoIP_InstanceID, $System["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
+		    	if(VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
 				$this->SendDebug("CallMonitor", "Ausgehender Anruf", 0);
 			    	return;
 		    	}
 
-		    	switch($Event) {
+		    	switch($_IPS["EVENT"]) {
 				case "Incoming":
 					$this->SendDebug("CallMonitor", "Eingehender Anruf", 0);
 			    		break;
@@ -93,7 +93,7 @@
 				case "DTMF":
 					$this->SendDebug("CallMonitor", "Es wurde ein DTMF Signal empfangen", 0);
 
-			    		switch($Data) {
+			    		switch($_IPS["DATA"]) {
 						case '1':
 						case '2':
 						case '3':
@@ -108,7 +108,7 @@
 				    			break;
 
 						default:
-							$this->SendDebug("CallMonitor", "Es wurde die Taste ". $Data ." gedrückt", 0);
+							$this->SendDebug("CallMonitor", "Es wurde die Taste ". $_IPS["DATA"] ." gedrückt", 0);
 				    			break;
 			    		}
 			    		break;
@@ -118,7 +118,7 @@
 			    		break;
 
 				default:
-					$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$Event." wurde ausgelöst", 0);
+					$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$_IPS["EVENT"]." wurde ausgelöst", 0);
 			    		break;
 		    	}
 		}
