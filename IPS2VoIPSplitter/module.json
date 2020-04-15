@@ -1,0 +1,14 @@
+{
+  "id": "{EE90A447-53E8-9B5F-B7FA-6F5E3A87F74C}",
+  "name": "IPS2VoIPSplitter",
+  "type": 2,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2VoIPSplitter"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "IPS2VoIPSplitter"
+}
