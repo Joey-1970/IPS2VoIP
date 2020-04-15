@@ -55,13 +55,21 @@
 		}	
 	}
 	
-	public function RequestAction($Ident, $Value) 
+	public function ForwardData($JSONString) 
 	{
-  		switch($Ident) {
-	        
-	        default:
-	            throw new Exception("Invalid Ident");
-	    }
+	 	// Empfangene Daten von der Device Instanz
+	    	$data = json_decode($JSONString);
+	    	$Result = false;
+	 	switch ($data->Function) {
+			case "Connect":
+				$this->Connect($data->DeviceNumber);
+				break;
+			case "Disconnect":
+				$this->Disconnect($data->ConnectionID);
+				break;
+			
+		}
+	return $Result;
 	}
 	    
 	// Beginn der Funktionen
@@ -124,6 +132,18 @@
 		}
 	}
 	
+	private function Connect(string $DeviceNumber)
+	{
+		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+		$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
+	}
+	    
+	private function Disconnect(int $ConnectionID)
+	{
+		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
+		VoIP_Disconnect($VoIP_InstanceID, $ConnectionID);
+	}
+	    
 	private function CheckParentModuleID(int $InstanceID)
 	{
 		$Result = false;
