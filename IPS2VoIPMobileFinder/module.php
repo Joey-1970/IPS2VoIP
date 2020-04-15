@@ -17,7 +17,6 @@
 		$this->ConnectParent("{EE90A447-53E8-9B5F-B7FA-6F5E3A87F74C}");
 		$this->RegisterPropertyBoolean("Open", false);
 		$this->RegisterPropertyString("DeviceNumber", "");
-		//$this->RegisterPropertyInteger("VoIP_InstanceID", 0);
 		$this->RegisterPropertyInteger("Timer_1", 3);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2VoIPMobileFinder_Disconnect($_IPS["TARGET"]);');
 		
@@ -44,8 +43,6 @@
 		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
 		$arrayElements[] = array("type" => "Label", "label" => "Telefonnummer des Endgerätes"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "DeviceNumber", "caption" => "Telefonnummer");
-		//$arrayElements[] = array("type" => "Label", "label" => "IP-Symcon VoIP-Instanz"); 
-		//$arrayElements[] = array("type" => "SelectInstance", "name" => "VoIP_InstanceID", "caption" => "VoIP-Instanz");
 		$arrayElements[] = array("type" => "Label", "label" => "Laufzeit des Klingelsignals (3 bis 15 Sekunden)"); 
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "s");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
@@ -65,12 +62,9 @@
 		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			// Prüfen des ausgeählten Parents
-			//$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
-			//$CheckParentModuleID = $this->CheckParentModuleID($VoIP_InstanceID);
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
 			$CheckDeviceNumber = $this->CheckDeviceNumber($DeviceNumber);
 			
-			//If (($CheckParentModuleID == true) AND ($CheckDeviceNumber == true)) {
 			If ($CheckDeviceNumber == true) {
 				$this->SetStatus(102);
 			}
@@ -115,8 +109,6 @@
 			$Timer_1 = $this->ReadPropertyInteger("Timer_1");
 			$Timer_1 = min(15, max(3, $Timer_1));
 			
-			//$ConnectionID = VoIP_Connect($VoIP_InstanceID, $DeviceNumber);
-			
 			$ConnectionID = $this->SendDataToParent(json_encode(Array("DataID"=> "{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}", 
 						"Function" => "Connect", "DeviceNumber" => $this->ReadPropertyString("DeviceNumber") )));
 
@@ -130,15 +122,11 @@
   		$CurrentStatus = $this->GetStatus();
 		If (($this->ReadPropertyBoolean("Open") == true) AND ($CurrentStatus == 102)) {
 			SetValueInteger($this->GetIDForIdent("State"), 1);
-			//$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 			$ConnectionID = intval($this->GetBuffer("ConnectionID"));
-			
-			//VoIP_Disconnect($VoIP_InstanceID, $ConnectionID);
 			
 			$ConnectionID = $this->SendDataToParent(json_encode(Array("DataID"=> "{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}", 
 						"Function" => "Disconnect", "ConnectionID" => $ConnectionID )));
 
-			
 			$this->SetTimerInterval("Timer_1", 0);
 			$this->SetBuffer("ConnectionID", 0);
 		}
@@ -160,25 +148,6 @@
 	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);        
 	} 
-	/*
-	private function CheckParentModuleID(int $InstanceID)
-	{
-		$Result = false;
-		If ($InstanceID >= 10000) {
-			$ModuleID = (IPS_GetInstance($InstanceID)['ModuleInfo']['ModuleID']); 
-			If ($ModuleID == "{A4224A63-49EA-445F-8422-22EF99D8F624}") {
-				$Result = true;
-			}
-			else {
-				Echo "Fehlerhafte VoIP-Schnittstelle! \n(keine korrekte VoIP-Instanz)\n";
-			}
-		}
-		else {
-			Echo "Fehlende VoIP-Schnittstelle! \n";
-		}
-	return $Result;
-	}
-	*/
 	    
 	private function CheckDeviceNumber(string $DeviceNumber)
 	{
