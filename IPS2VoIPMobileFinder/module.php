@@ -70,7 +70,8 @@
 			$DeviceNumber = $this->ReadPropertyString("DeviceNumber");
 			$CheckDeviceNumber = $this->CheckDeviceNumber($DeviceNumber);
 			
-			If (($CheckParentModuleID == true) AND ($CheckDeviceNumber == true)) {
+			//If (($CheckParentModuleID == true) AND ($CheckDeviceNumber == true)) {
+			If ($CheckDeviceNumber == true) {
 				$this->SetStatus(102);
 			}
 			else {
