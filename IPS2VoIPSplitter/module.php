@@ -38,8 +38,6 @@
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
 		
-		SetValueInteger($this->GetIDForIdent("State"), 1);
-		
 		If ($this->ReadPropertyBoolean("Open") == true) {
 			// Prüfen des ausgeählten Parents
 			$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
