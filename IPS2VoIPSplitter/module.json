@@ -8,7 +8,7 @@
     "IPS2VoIPSplitter"
   ],
   "parentRequirements": [],
-  "childRequirements": [],
-  "implemented": [],
+  "childRequirements": ["{0E8148CB-54DC-C37C-0497-0858FB9F6700}"],
+  "implemented": ["{7E7666EA-A882-7DBB-418A-3A64E00CAB4C}"],
   "prefix": "IPS2VoIPSplitter"
 }
