@@ -65,13 +65,14 @@
 	}
 	    
 	// Beginn der Funktionen
-	public function CallMonitor(string $Sender, string $Event, int $Connection, string $Data)
+	public function CallMonitor(string $Sender, string $Event, string $System, string $Data)
 	{
 		$VoIP_InstanceID = $this->ReadPropertyInteger("VoIP_InstanceID");
 
 		if($Sender == "VoIP") {
+			$System = unserialize($System);
 		    	// Wir wollen nur eingehende Anrufe verarbeiten
-		    	if(VoIP_GetConnection($VoIP_InstanceID, $Connection["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
+		    	if(VoIP_GetConnection($VoIP_InstanceID, $System["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
 				$this->SendDebug("CallMonitor", "Ausgehender Anruf", 0);
 			    	return;
 		    	}
