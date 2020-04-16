@@ -79,59 +79,61 @@
 
 		if($_IPS["SENDER"] == "VoIP") {
 			$_IPS = unserialize($Data);
-		    	// Wir wollen nur eingehende Anrufe verarbeiten
+		    	
+			$Number = preg_replace('/[^0-9]/', '', VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"]); 
+			
+			// Ausgehender Anruf
 		    	if(VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
-				$this->SendDebug("CallMonitor", "Ausgehender Anruf", 0);
+				$this->SendDebug("CallMonitor", "Ausgehender Anruf: ".$Number, 0);
 			    	return;
 		    	}
-			
-			$Number = VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"];
-			$Number = preg_replace('/[^0-9]/', '', $Number); 
-			
-		    	switch($_IPS["EVENT"]) {
-				case "Incoming":
-					$this->SendDebug("CallMonitor", "Eingehender Anruf von: ".$Number, 0);
-			    		break;
+			else {
+				// Eingehender Anruf
+				switch($_IPS["EVENT"]) {
+					case "Incoming":
+						$this->SendDebug("CallMonitor", "Eingehender Anruf von: ".$Number, 0);
+						break;
 
-				case "Connect":
-					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung zu ".$Number." aufgebaut", 0);
-			    		break;
+					case "Connect":
+						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung zu ".$Number." aufgebaut", 0);
+						break;
 
-				case "Disconnect":
-					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung beendet", 0);
-			    		break;
+					case "Disconnect":
+						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung beendet", 0);
+						break;
 
-				case "DTMF":
-					$this->SendDebug("CallMonitor", "Es wurde ein DTMF Signal empfangen", 0);
+					case "DTMF":
+						$this->SendDebug("CallMonitor", "Es wurde ein DTMF Signal empfangen", 0);
 
-			    		switch($_IPS["DATA"]) {
-						case '1':
-						case '2':
-						case '3':
-						case '4':
-						case '5':
-						case '6':
-						$this->SendDebug("CallMonitor", "Es wurde eine der Tasten 1 bis 6 gedrückt", 0);
-				    		break;
+						switch($_IPS["DATA"]) {
+							case '1':
+							case '2':
+							case '3':
+							case '4':
+							case '5':
+							case '6':
+							$this->SendDebug("CallMonitor", "Es wurde eine der Tasten 1 bis 6 gedrückt", 0);
+							break;
 
-						case '#':
-							$this->SendDebug("CallMonitor", "Es wurde die Taste # gedrückt", 0);
-				    			break;
+							case '#':
+								$this->SendDebug("CallMonitor", "Es wurde die Taste # gedrückt", 0);
+								break;
 
-						default:
-							$this->SendDebug("CallMonitor", "Es wurde die Taste ". $_IPS["DATA"] ." gedrückt", 0);
-				    			break;
-			    		}
-			    		break;
+							default:
+								$this->SendDebug("CallMonitor", "Es wurde die Taste ". $_IPS["DATA"] ." gedrückt", 0);
+								break;
+						}
+						break;
 
-				case "PlayFinish":
-					$this->SendDebug("CallMonitor", "Es wurde eine Sounddatei abgespielt", 0);
-			    		break;
+					case "PlayFinish":
+						$this->SendDebug("CallMonitor", "Es wurde eine Sounddatei abgespielt", 0);
+						break;
 
-				default:
-					$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$_IPS["EVENT"]." wurde ausgelöst", 0);
-			    		break;
-		    	}
+					default:
+						$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$_IPS["EVENT"]." wurde ausgelöst", 0);
+						break;
+				}
+			}
 		}
 	}
 	
