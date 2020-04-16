@@ -82,8 +82,10 @@
 		if($_IPS["SENDER"] == "VoIP") {
 			$_IPS = unserialize($Data);
 		    	
-			$Number = preg_replace('/[^0-9]/', '', VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"]); 
-			
+			$Number = preg_replace('/[^0-9*]/', '', VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"]); 
+			If ($Number == "") {
+				$Number = "unbekannt";
+			}
 			// Ausgehender Anruf
 		    	if(VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
 				SetValueString($this->GetIDForIdent("State"), "Ausgehender Anruf: ".$Number);
