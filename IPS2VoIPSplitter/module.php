@@ -86,6 +86,7 @@
 		    	}
 			
 			$Number = VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"];
+			$Number = preg_replace('/[^0-9]/', '', $Number); 
 			
 		    	switch($_IPS["EVENT"]) {
 				case "Incoming":
