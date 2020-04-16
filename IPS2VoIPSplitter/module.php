@@ -12,6 +12,8 @@
 		$this->RegisterPropertyBoolean("Open", false);
 		$this->RegisterPropertyInteger("VoIP_InstanceID", 0);
 		
+		$this->RegisterVariableString("State", "Status", "", 10);
+		
         }
  	
 	public function GetConfigurationForm() 
@@ -84,25 +86,44 @@
 			
 			// Ausgehender Anruf
 		    	if(VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Direction"] == 1 /* Ausgehend */) {
+				SetValueString($this->GetIDForIdent("State"), "Ausgehender Anruf: ".$Number);
 				$this->SendDebug("CallMonitor", "Ausgehender Anruf: ".$Number, 0);
-			    	return;
+			   	switch($_IPS["EVENT"]) {
+					case "Connect":
+						SetValueString($this->GetIDForIdent("State"), "Es wurde eine Verbindung zu ".$Number." aufgebaut");
+						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung zu ".$Number." aufgebaut", 0);
+						break;
+
+					case "Disconnect":
+						SetValueString($this->GetIDForIdent("State"), "Es wurde eine Verbindung beendet");
+						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung beendet", 0);
+						break;
+
+					default:
+						$this->SendDebug("CallMonitor", "Ein unbekanntes Event ".$_IPS["EVENT"]." wurde ausgelöst", 0);
+						break;
+				}
 		    	}
 			else {
 				// Eingehender Anruf
 				switch($_IPS["EVENT"]) {
 					case "Incoming":
+						SetValueString($this->GetIDForIdent("State"), "Eingehender Anruf von: ".$Number);
 						$this->SendDebug("CallMonitor", "Eingehender Anruf von: ".$Number, 0);
 						break;
 
 					case "Connect":
+						SetValueString($this->GetIDForIdent("State"), "Es wurde eine Verbindung zu ".$Number." aufgebaut");
 						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung zu ".$Number." aufgebaut", 0);
 						break;
 
 					case "Disconnect":
+						SetValueString($this->GetIDForIdent("State"), "Es wurde eine Verbindung beendet");
 						$this->SendDebug("CallMonitor", "Es wurde eine Verbindung beendet", 0);
 						break;
 
 					case "DTMF":
+						SetValueString($this->GetIDForIdent("State"), "Es wurde ein DTMF Signal empfangen");
 						$this->SendDebug("CallMonitor", "Es wurde ein DTMF Signal empfangen", 0);
 
 						switch($_IPS["DATA"]) {
