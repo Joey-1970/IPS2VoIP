@@ -84,14 +84,16 @@
 				$this->SendDebug("CallMonitor", "Ausgehender Anruf", 0);
 			    	return;
 		    	}
-
+			
+			$Number = VoIP_GetConnection($VoIP_InstanceID, $_IPS["CONNECTION"])["Number"];
+			
 		    	switch($_IPS["EVENT"]) {
 				case "Incoming":
-					$this->SendDebug("CallMonitor", "Eingehender Anruf", 0);
+					$this->SendDebug("CallMonitor", "Eingehender Anruf von: ".$Number, 0);
 			    		break;
 
 				case "Connect":
-					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung aufgebaut", 0);
+					$this->SendDebug("CallMonitor", "Es wurde eine Verbindung zu ".$Number." aufgebaut", 0);
 			    		break;
 
 				case "Disconnect":
