@@ -59,15 +59,21 @@
 			$CheckDeviceNumber = $this->CheckDeviceNumber($DeviceNumber);
 			
 			If ($CheckDeviceNumber == true) {
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 			}
 			else {
-				$this->SetStatus(202);
+				If ($this->GetStatus() <> 202) {
+					$this->SetStatus(202);
+				}
 			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}
 		else {
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 			$this->SetTimerInterval("Timer_1", 0);
 		}	
 	}
