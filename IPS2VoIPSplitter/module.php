@@ -46,14 +46,20 @@
 			$CheckParentModuleID = $this->CheckParentModuleID($VoIP_InstanceID);
 			
 			If ($CheckParentModuleID == true) {
-				$this->SetStatus(102);
+				If ($this->GetStatus() <> 102) {
+					$this->SetStatus(102);
+				}
 			}
 			else {
-				$this->SetStatus(202);
+				If ($this->GetStatus() <> 202) {
+					$this->SetStatus(202);
+				}
 			}
 		}
 		else {
-			$this->SetStatus(104);
+			If ($this->GetStatus() <> 104) {
+				$this->SetStatus(104);
+			}
 		}	
 	}
 	
